@@ -114,6 +114,10 @@ try:
     client = gspread.authorize(creds)
     sheet = client.open_by_key(SHEET_ID).sheet1
     df = pd.DataFrame(sheet.get_all_records())
+    df["waktu"] = pd.to_datetime(df["waktu"], errors="coerce")
+    df = df.sort_values("waktu", ascending=False)
+    df = df.iloc[:496].copy()
+
 except Exception:
     df = pd.read_csv("backup_data.csv")
 
@@ -133,6 +137,10 @@ df = df.dropna(subset=["waktu", "suhu", "getaran"])
 # >>> FIX 2: ambil data TERAKHIR yang VALID (gauge tidak 0)
 df_valid = df[(df["suhu"] > 0) & (df["getaran"] > 0)]
 last = df_valid.iloc[0]
+st.write("CEK DATA TERATAS")
+st.dataframe(df.head())
+st.write("DATA STATUS")
+st.write(last)
 
 def overall_status(row):
 
