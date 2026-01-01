@@ -122,7 +122,6 @@ except Exception:
     df = pd.read_csv("backup_data.csv")
 
 # ================= FILTER DATA (BUANG OUTLIER) =================
-df = df.iloc[:496].copy()
 
 # ================= PREPROCESS =================
 df.columns = df.columns.str.lower().str.strip()
@@ -137,10 +136,6 @@ df = df.dropna(subset=["waktu", "suhu", "getaran"])
 # >>> FIX 2: ambil data TERAKHIR yang VALID (gauge tidak 0)
 df_valid = df[(df["suhu"] > 0) & (df["getaran"] > 0)]
 last = df_valid.iloc[0]
-st.write("CEK DATA TERATAS")
-st.dataframe(df.head())
-st.write("DATA STATUS")
-st.write(last)
 
 def overall_status(row):
 
