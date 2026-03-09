@@ -117,8 +117,9 @@ try:
     sheet = client.open_by_key(SHEET_ID).sheet1
     df = pd.DataFrame(sheet.get_all_records())
     df["waktu"] = pd.to_datetime(df["waktu"], errors="coerce")
-    df = df.sort_values("waktu", ascending=True)
-    df = df.tail(496).copy()
+    df = df.sort_values("waktu", ascending=False)
+    df = df.head(496).copy()
+    df = df.sort_values("waktu")
 
 except Exception:
     df = pd.read_csv("backup_data.csv")
