@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from streamlit_option_menu import option_menu
 
+
 # ================= PAGE CONFIG =================
 st.set_page_config(
     page_title="M-EMS | Marine Engine Monitoring System",
@@ -116,8 +117,8 @@ try:
     sheet = client.open_by_key(SHEET_ID).sheet1
     df = pd.DataFrame(sheet.get_all_records())
     df["waktu"] = pd.to_datetime(df["waktu"], errors="coerce")
-    df = df.sort_values("waktu", ascending=False)
-    df = df.iloc[:496].copy()
+    df = df.sort_values("waktu", ascending=True)
+    df = df.tail(496).copy()
 
 except Exception:
     df = pd.read_csv("backup_data.csv")
@@ -136,7 +137,7 @@ df = df.dropna(subset=["waktu", "suhu", "getaran"])
 
 # >>> FIX 2: ambil data TERAKHIR yang VALID (gauge tidak 0)
 df_valid = df[(df["suhu"] > 0) & (df["getaran"] > 0)]
-last = df_valid.iloc[0]
+last = df_valid.iloc[-1]
 
 def overall_status(row):
 
